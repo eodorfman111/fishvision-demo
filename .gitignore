@@ -1,0 +1,12 @@
+# Model weights — stored on HuggingFace Hub, not in git
+models/*.pt
+models/*.pth
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Streamlit local cache
+.streamlit/secrets.toml
