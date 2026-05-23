@@ -452,18 +452,12 @@ CS @ University of Florida<br><br>
 def render_demo_video() -> None:
     if DEMO_VIDEO_PATH.exists():
         st.markdown("### 🎬 Live Demo")
-        # Streamlit static file server: enableStaticServing=true in .streamlit/config.toml
-        # serves static/ at /app/static/ — no base64 needed, browser streams it directly
         st.markdown("""
-<div class='glass-card' style='padding:0.8rem'>
-  <video width="100%" autoplay loop muted playsinline style="border-radius:8px;display:block"
-         src="/app/static/demo.mp4">
-  </video>
-  <p style='color:#5ebbdc;font-size:0.75rem;text-align:center;margin:0.5rem 0 0'>
-    Sample underwater footage · YOLO26 seabream detection
-  </p>
-</div>
-""", unsafe_allow_html=True)
+<div style='color:#5ebbdc;font-size:0.78rem;margin-bottom:0.4rem;letter-spacing:1px'>
+  ▶ Press play — YOLO26 seabream detection on real underwater footage
+</div>""", unsafe_allow_html=True)
+        with open(DEMO_VIDEO_PATH, "rb") as f:
+            st.video(f.read(), format="video/mp4")
 
 
 def render_pipeline_overview() -> None:
