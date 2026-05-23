@@ -10,17 +10,14 @@ import tempfile
 import time
 from pathlib import Path
 from datetime import timedelta
+from typing import Any
 
 import streamlit as st
-from huggingface_hub import hf_hub_download
 import pandas as pd
 import plotly.graph_objects as go
-import cv2
-import torch
-from ultralytics import YOLO
-from reportlab.lib.pagesizes import A4
-from reportlab.pdfgen import canvas
-from reportlab.lib.utils import ImageReader
+
+# cv2, torch, ultralytics, reportlab, huggingface_hub are imported lazily
+# inside functions so the landing page loads even if system libs are missing.
 
 # ── CONFIG ──────────────────────────────────────────────────────────────────
 APP_NAME        = "FishVision"
@@ -159,7 +156,9 @@ def apply_theme(fig: go.Figure) -> go.Figure:
     return fig
 
 @st.cache_resource(show_spinner=False)
-def load_model() -> YOLO:
+def load_model() -> Any:
+    import torch
+    from ultralytics import YOLO
     model = YOLO(str(MODEL_PATH), task="detect")
     try:
         model.model.half = False
@@ -171,13 +170,15 @@ def load_model() -> YOLO:
 
 def run_inference(
     video_path: str,
-    model: YOLO,
+    model: Any,
     sample_every: int,
     conf: float,
     topk: int,
     progress_bar,
     status_text,
 ) -> tuple[pd.DataFrame, list[dict], dict]:
+    import cv2
+    import torch
     cap         = cv2.VideoCapture(video_path)
     fps         = cap.get(cv2.CAP_PROP_FPS) or 25.0
     total_fr    = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -261,7 +262,7 @@ def run_inference(
                             if not df.empty and df["fish_count"].max() > 0 else "—",
         "total_detections": int(df["fish_count"].sum()),
         "detection_frames": int((df["fish_count"] > 0).sum()),
-        "device":           "cuda" if torch.cuda.is_available() else "cpu",
+        "device":           "cuda" if torch.cuda.is_available() else "cpu",  # torch imported above
     }
     return df, topk_frames, stats
 
@@ -291,6 +292,9 @@ def build_charts(df: pd.DataFrame):
     return fig_line, fig_hist
 
 def make_pdf(stats: dict, topk_frames: list[dict], video_name: str, conf: float) -> bytes:
+    from reportlab.lib.pagesizes import A4
+    from reportlab.pdfgen import canvas
+    from reportlab.lib.utils import ImageReader
     buf  = io.BytesIO()
     c    = canvas.Canvas(buf, pagesize=A4)
     W, H = A4
@@ -615,6 +619,7 @@ def main():
     # ── Model load (auto-download from HuggingFace Hub if not present)
     if not MODEL_PATH.exists():
         with st.spinner("Downloading model weights…"):
+            from huggingface_hub import hf_hub_download
             MODEL_PATH.parent.mkdir(exist_ok=True)
             hf_token = st.secrets.get("HF_TOKEN") or os.environ.get("HF_TOKEN")
             hf_hub_download(
@@ -627,7 +632,11 @@ def main():
     with st.spinner("Loading model..."):
         model = load_model()
 
-    device_label = "🟢 GPU (CUDA)" if torch.cuda.is_available() else "🔵 CPU"
+    try:
+        import torch
+        device_label = "🟢 GPU (CUDA)" if torch.cuda.is_available() else "🔵 CPU"
+    except Exception:
+        device_label = "🔵 CPU"
     st.caption(f"Model loaded · Inference device: {device_label}")
 
     # ── Upload widget
