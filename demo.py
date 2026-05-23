@@ -474,39 +474,77 @@ def render_demo_video() -> None:
 
 def render_pipeline_overview() -> None:
     st.markdown("""
-<div class='glass-card'>
+<div class='glass-card' style='margin-bottom:1.2rem'>
   <div style='font-family:Orbitron,sans-serif;color:#00e5ff;font-size:0.82rem;
-              letter-spacing:2px;margin-bottom:1rem'>PIPELINE OVERVIEW</div>
-  <div style='display:grid;grid-template-columns:1fr 1fr;gap:1.4rem'>
+              letter-spacing:2px;margin-bottom:1.1rem'>PIPELINE CAPABILITIES</div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:1.5rem'>
+
     <div>
-      <div style='color:#00e5ff;font-size:0.78rem;margin-bottom:4px'>📹 Video Ingest</div>
-      <div style='color:#5ebbdc;font-size:0.73rem;line-height:1.6'>
-        Frame-sampled analysis at configurable intervals.<br>
-        4K-capable · .mp4 .mov .mkv .avi
+      <div style='color:#00e5ff;font-size:0.78rem;margin-bottom:4px'>📹 Multi-Video Batch Processing</div>
+      <div style='color:#5ebbdc;font-size:0.73rem;line-height:1.7'>
+        Ingest entire folders of clips as a <b style='color:#c8e6f5'>continuous timeline</b> — no manual stitching.<br>
+        Configurable frame sampling down to 0.1 s intervals · 4K-capable · .mp4 .mov .mkv .avi
       </div>
     </div>
+
     <div>
-      <div style='color:#00e5ff;font-size:0.78rem;margin-bottom:4px'>🤖 YOLO26 Detection</div>
-      <div style='color:#5ebbdc;font-size:0.73rem;line-height:1.6'>
-        Custom-trained binary detector.<br>
-        Bounding boxes · confidence scoring
+      <div style='color:#00e5ff;font-size:0.78rem;margin-bottom:4px'>🤖 YOLO26 Custom Detector</div>
+      <div style='color:#5ebbdc;font-size:0.73rem;line-height:1.7'>
+        Purpose-trained on underwater footage with <b style='color:#c8e6f5'>IoU deduplication</b> and nested-box filtering
+        for pixel-accurate counts — no double-counting artifacts.
       </div>
     </div>
+
     <div>
-      <div style='color:#00e5ff;font-size:0.78rem;margin-bottom:4px'>📊 Analytics</div>
-      <div style='color:#5ebbdc;font-size:0.73rem;line-height:1.6'>
-        Time-series plots · histograms<br>
-        Peak identification · CSV export
+      <div style='color:#00e5ff;font-size:0.78rem;margin-bottom:4px'>🧠 Behavioral Pattern Analysis</div>
+      <div style='color:#5ebbdc;font-size:0.73rem;line-height:1.7'>
+        Detects <b style='color:#c8e6f5'>population-level events</b> from count dynamics:<br>
+        · Sudden exodus / fleeing behaviour<br>
+        · Novel species entry (e.g. cuttlefish incursion)<br>
+        · Burst activity windows &amp; quiet periods
       </div>
     </div>
+
     <div>
-      <div style='color:#00e5ff;font-size:0.78rem;margin-bottom:4px'>📄 Report Export</div>
-      <div style='color:#5ebbdc;font-size:0.73rem;line-height:1.6'>
-        Professional PDF with annotated frames<br>
-        Statistics summary · branded layout
+      <div style='color:#00e5ff;font-size:0.78rem;margin-bottom:4px'>🔴 Live Preview Mode</div>
+      <div style='color:#5ebbdc;font-size:0.73rem;line-height:1.7'>
+        Streams annotated frames in real time <i>during</i> processing — no waiting for the full run to see
+        what the model found.
       </div>
     </div>
+
+    <div>
+      <div style='color:#00e5ff;font-size:0.78rem;margin-bottom:4px'>📊 Analytics &amp; AI Ecological Summary</div>
+      <div style='color:#5ebbdc;font-size:0.73rem;line-height:1.7'>
+        Time-series plots · peak identification · detection heatmaps.<br>
+        <b style='color:#c8e6f5'>GPT-4o-mini</b> generates a plain-English ecological summary from the numeric output.
+      </div>
+    </div>
+
+    <div>
+      <div style='color:#00e5ff;font-size:0.78rem;margin-bottom:4px'>📄 Multi-Format Export</div>
+      <div style='color:#5ebbdc;font-size:0.73rem;line-height:1.7'>
+        · PDF report with peak annotated frames<br>
+        · SOP-compliant Excel (all samples + detections-only sheets)<br>
+        · ZIP of annotated frame gallery · CSV raw data
+      </div>
+    </div>
+
   </div>
+</div>
+""", unsafe_allow_html=True)
+
+    # ── Behavioral highlights callout
+    st.markdown("""
+<div style='background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.2);
+            border-left:3px solid #00e5ff;border-radius:8px;
+            padding:0.9rem 1.3rem;margin-bottom:1rem;font-size:0.76rem;color:#5ebbdc;line-height:1.8'>
+  <span style='font-family:Orbitron,sans-serif;color:#00e5ff;font-size:0.72rem;
+               letter-spacing:2px'>WHAT THE SYSTEM HAS FLAGGED IN REAL DEPLOYMENTS</span><br><br>
+  <span style='color:#c8e6f5'>🐟</span>&nbsp; Sudden 80 %+ drop in fish count within a 3-second window → <b style='color:#c8e6f5'>predator-induced fleeing event</b><br>
+  <span style='color:#c8e6f5'>🦑</span>&nbsp; Novel silhouette enters frame mid-session → <b style='color:#c8e6f5'>cuttlefish / octopus incursion detected</b><br>
+  <span style='color:#c8e6f5'>📈</span>&nbsp; Multi-clip timeline reveals <b style='color:#c8e6f5'>peak activity windows</b> tied to tidal cycle<br>
+  <span style='color:#c8e6f5'>🔕</span>&nbsp; Zero-detection stretches automatically flagged as <b style='color:#c8e6f5'>low-activity or obstructed-camera periods</b>
 </div>
 """, unsafe_allow_html=True)
 
@@ -571,6 +609,9 @@ def main():
 """, unsafe_allow_html=True)
     st.markdown("---")
 
+    # ── Demo video FIRST — visitors see detection running before anything else loads
+    render_demo_video()
+
     # ── Model load (auto-download from HuggingFace Hub if not present)
     if not MODEL_PATH.exists():
         with st.spinner("Downloading model weights…"):
@@ -588,9 +629,6 @@ def main():
 
     device_label = "🟢 GPU (CUDA)" if torch.cuda.is_available() else "🔵 CPU"
     st.caption(f"Model loaded · Inference device: {device_label}")
-
-    # ── Demo video first — visitors see detection before being asked to upload
-    render_demo_video()
 
     # ── Upload widget
     st.markdown("### Upload Your Own Video")
