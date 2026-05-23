@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import base64
 import io
 import os
 import tempfile
@@ -449,15 +450,26 @@ CS @ University of Florida<br><br>
     return sample_every, conf, topk
 
 
+@st.cache_resource(show_spinner=False)
+def _demo_video_b64() -> str:
+    with open(DEMO_VIDEO_PATH, "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
 def render_demo_video() -> None:
     if DEMO_VIDEO_PATH.exists():
         st.markdown("### 🎬 Live Demo")
-        st.markdown("""
-<div style='color:#5ebbdc;font-size:0.78rem;margin-bottom:0.4rem;letter-spacing:1px'>
-  ▶ Press play — YOLO26 seabream detection on real underwater footage
-</div>""", unsafe_allow_html=True)
-        with open(DEMO_VIDEO_PATH, "rb") as f:
-            st.video(f.read(), format="video/mp4")
+        b64 = _demo_video_b64()
+        st.markdown(f"""
+<div class='glass-card' style='padding:0.6rem 0.6rem 0.2rem'>
+  <video width="100%" autoplay loop muted playsinline
+         style="border-radius:8px;display:block;max-height:480px;object-fit:cover">
+    <source src="data:video/mp4;base64,{b64}" type="video/mp4">
+  </video>
+  <p style='color:#5ebbdc;font-size:0.72rem;text-align:center;margin:0.4rem 0 0.2rem;letter-spacing:1px'>
+    YOLO26 · seabream detection · real underwater footage
+  </p>
+</div>
+""", unsafe_allow_html=True)
 
 
 def render_pipeline_overview() -> None:
