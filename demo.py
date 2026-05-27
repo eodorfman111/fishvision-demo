@@ -185,8 +185,13 @@ def apply_theme(fig: go.Figure) -> go.Figure:
 # ── ASSET LOADING ─────────────────────────────────────────────────────────────
 @st.cache_resource(show_spinner=False)
 def _load_gallery_images() -> dict[str, str]:
-    """Load gallery PNGs as base64 strings (cached once per process)."""
+    """Load gallery PNGs + hero video as base64 strings (cached once per process)."""
     result: dict[str, str] = {}
+    # Hero video
+    if PREVIEW_VIDEO.exists():
+        with open(PREVIEW_VIDEO, "rb") as f:
+            result["video"] = base64.b64encode(f.read()).decode()
+    # Detection images
     for item in GALLERY:
         path = STATIC_DIR / item["file"]
         if path.exists():
@@ -455,36 +460,38 @@ CS @ University of Florida<br><br>
 
 
 def render_hero() -> None:
-    """Full-width looping detection video served from static/."""
-    if PREVIEW_VIDEO.exists():
-        st.markdown(
-            "<div style='"
-            "position:relative;border-radius:14px;overflow:hidden;"
-            "box-shadow:0 8px 48px rgba(0,229,255,0.14);margin-bottom:0.3rem'>"
-            "<video autoplay loop muted playsinline "
-            "style='width:100%;display:block;max-height:480px;"
-            "object-fit:cover;object-position:center bottom'>"
-            "<source src='/app/static/preview.mp4' type='video/mp4'>"
-            "</video>"
-            "<div style='"
-            "position:absolute;bottom:0;left:0;right:0;"
-            "background:linear-gradient(to top,rgba(2,13,26,0.93) 0%,"
-            "rgba(2,13,26,0.45) 55%,transparent 100%);"
-            "padding:1.8rem 2rem'>"
-            "<div style='"
-            "font-family:Orbitron,sans-serif;color:#00e5ff;"
-            "font-size:1.05rem;letter-spacing:3px;margin-bottom:0.5rem'>"
-            "REAL-TIME MARINE SPECIES DETECTION"
-            "</div>"
-            "<div style='color:#c8e6f5;font-size:0.8rem;letter-spacing:1px'>"
-            "YOLO26 &nbsp;·&nbsp; custom-trained &nbsp;·&nbsp; "
-            "multi-species &nbsp;·&nbsp; real underwater footage"
-            "</div>"
-            "</div></div>",
-            unsafe_allow_html=True,
-        )
-    else:
+    """Full-width looping detection video, base64-embedded for reliable cloud delivery."""
+    assets = _load_gallery_images()
+    if "video" not in assets:
         st.warning("Hero video not found — place preview.mp4 in the static/ folder.")
+        return
+    b64 = assets["video"]
+    st.markdown(
+        "<div style='"
+        "position:relative;border-radius:14px;overflow:hidden;"
+        "box-shadow:0 8px 48px rgba(0,229,255,0.14);margin-bottom:0.3rem'>"
+        f"<video autoplay loop muted playsinline "
+        f"style='width:100%;display:block;max-height:480px;"
+        f"object-fit:cover;object-position:center bottom'>"
+        f"<source src='data:video/mp4;base64,{b64}' type='video/mp4'>"
+        f"</video>"
+        "<div style='"
+        "position:absolute;bottom:0;left:0;right:0;"
+        "background:linear-gradient(to top,rgba(2,13,26,0.93) 0%,"
+        "rgba(2,13,26,0.45) 55%,transparent 100%);"
+        "padding:1.8rem 2rem'>"
+        "<div style='"
+        "font-family:Orbitron,sans-serif;color:#00e5ff;"
+        "font-size:1.05rem;letter-spacing:3px;margin-bottom:0.5rem'>"
+        "REAL-TIME MARINE SPECIES DETECTION"
+        "</div>"
+        "<div style='color:#c8e6f5;font-size:0.8rem;letter-spacing:1px'>"
+        "YOLO26 &nbsp;·&nbsp; custom-trained &nbsp;·&nbsp; "
+        "multi-species &nbsp;·&nbsp; real underwater footage"
+        "</div>"
+        "</div></div>",
+        unsafe_allow_html=True,
+    )
 
 
 def render_detection_gallery() -> None:
