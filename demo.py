@@ -462,7 +462,8 @@ def render_hero() -> None:
             "position:relative;border-radius:14px;overflow:hidden;"
             "box-shadow:0 8px 48px rgba(0,229,255,0.14);margin-bottom:0.3rem'>"
             "<video autoplay loop muted playsinline "
-            "style='width:100%;display:block;max-height:520px;object-fit:cover'>"
+            "style='width:100%;display:block;max-height:480px;"
+            "object-fit:cover;object-position:center bottom'>"
             "<source src='/app/static/preview.mp4' type='video/mp4'>"
             "</video>"
             "<div style='"
@@ -779,22 +780,20 @@ def main() -> None:
     st.markdown(CSS, unsafe_allow_html=True)
     render_sidebar()
 
-    # ── Page header
+    # ── Page header (compact — keep video above the fold)
     st.markdown(
-        "<div style='text-align:center;padding:1rem 0 0.8rem'>"
+        "<div style='text-align:center;padding:0.3rem 0 0.4rem'>"
         "<div class='demo-badge'>LIVE DEMO</div>"
-        "<h1>🐟 FishVision</h1>"
-        "<p style='color:#5ebbdc;font-size:0.83rem;letter-spacing:3px;margin-top:-4px'>"
-        "UNDERWATER MARINE SPECIES DETECTION &nbsp;·&nbsp; "
-        "YOLO26 &nbsp;·&nbsp; COMPUTER VISION"
+        "<h1 style='font-size:1.5rem!important;margin:0.2rem 0 0.1rem'>🐟 FishVision</h1>"
+        "<p style='color:#5ebbdc;font-size:0.75rem;letter-spacing:3px;margin:0 0 0.4rem'>"
+        "UNDERWATER MARINE SPECIES DETECTION &nbsp;·&nbsp; YOLO26 &nbsp;·&nbsp; COMPUTER VISION"
         "</p>"
-        "<div style='margin-top:0.5rem'>"
+        "<div>"
         "<span class='tag'>Computer Vision</span>"
         "<span class='tag'>YOLO26</span>"
         "<span class='tag'>Marine Research</span>"
         "<span class='tag'>Multi-Species</span>"
         "<span class='tag'>Underwater Video</span>"
-        "<span class='tag'>Python</span>"
         "</div></div>",
         unsafe_allow_html=True,
     )
