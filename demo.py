@@ -26,7 +26,7 @@ STATIC_DIR     = Path(__file__).parent / "static"
 PREVIEW_VIDEO  = STATIC_DIR / "preview.mp4"
 FISH_COLOR_BGR = (150, 204, 0)
 FISH_COLOR_HEX = "#00CC96"
-MAX_UPLOAD_MB  = 200
+MAX_UPLOAD_MB  = 4000
 TARGET_CLASS   = "fish"
 
 CONTACT_EMAIL = "leodorfman1@gmail.com"
