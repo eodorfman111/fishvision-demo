@@ -21,7 +21,7 @@ import streamlit as st
 
 # ── CONFIG ────────────────────────────────────────────────────────────────────
 APP_NAME       = "FishVision"
-MODEL_PATH     = Path(__file__).parent / "models" / "best_v1.04.pt"
+MODEL_PATH     = Path(__file__).parent / "models" / "best_v1.08.pt"
 STATIC_DIR     = Path(__file__).parent / "static"
 PREVIEW_VIDEO  = STATIC_DIR / "preview.mp4"
 FISH_COLOR_BGR = (150, 204, 0)
@@ -655,7 +655,7 @@ def render_try_it() -> None:
             hf_token = st.secrets.get("HF_TOKEN") or os.environ.get("HF_TOKEN")
             hf_hub_download(
                 repo_id="leodorf/fishvision-detector",
-                filename="best_v1.04.pt",
+                filename="best_v1.08.pt",
                 local_dir=str(MODEL_PATH.parent),
                 token=hf_token,
             )
