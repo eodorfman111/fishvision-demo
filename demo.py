@@ -790,20 +790,7 @@ CS @ University of Florida<br><br>
 """, unsafe_allow_html=True)
 
         st.markdown("---")
-        with st.expander("🔑 AI Summary Config", expanded=False):
-            ai_provider = st.selectbox(
-                "AI Provider",
-                ["Gemini (Recommended)", "OpenAI"],
-                index=0,
-                key="ai_provider"
-            )
-            
-            # Determine default key based on provider selection
-            if "gemini" in ai_provider.lower():
-                default_key = st.secrets.get("GEMINI_API_KEY") or os.environ.get("GEMINI_API_KEY") or ""
-            else:
-                default_key = st.secrets.get("OPENAI_API_KEY") or os.environ.get("OPENAI_API_KEY") or ""
-                
+        if False:
             st.text_input(
                 "API Key",
                 value=default_key,
@@ -818,6 +805,7 @@ def render_hero() -> None:
     if not PREVIEW_VIDEO.exists():
         st.warning("Hero video not found — place preview.mp4 in the static/ folder.")
         return
+    b64_hero = _video_b64(PREVIEW_VIDEO)
     st.markdown(
         "<div style='"
         "position:relative;border-radius:14px;overflow:hidden;"
@@ -825,7 +813,7 @@ def render_hero() -> None:
         f"<video autoplay loop muted playsinline "
         f"style='width:100%;display:block;max-height:480px;"
         f"object-fit:cover;object-position:center bottom'>"
-        f"<source src='/app/static/preview.mp4' type='video/mp4'>"
+        f"<source src='data:video/mp4;base64,{b64_hero}' type='video/mp4'>"
         f"</video>"
         "<div style='"
         "position:absolute;bottom:0;left:0;right:0;"
@@ -846,34 +834,47 @@ def render_hero() -> None:
     )
 
 
+def _video_b64(path: Path) -> str:
+    import base64
+    with open(path, "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
 def render_dual_demo() -> None:
     st.markdown(
         "<div class='section-label'>LIVE DETECTION DEMOS</div>",
         unsafe_allow_html=True,
     )
     col_a, col_b = st.columns(2, gap="medium")
+
+    reef_path    = STATIC_DIR / "reef.mp4"
+    grading_path = STATIC_DIR / "grading.mp4"
+
     with col_a:
-        st.markdown(
-            "<div style='font-family:Orbitron,sans-serif;color:#00e5ff;font-size:0.75rem;"
-            "letter-spacing:2px;margin-bottom:0.5rem'>🐟 UNDERWATER REEF DETECTION</div>"
-            "<div style='border-radius:10px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.55)'>"
-            "<video autoplay loop muted playsinline style='width:100%;display:block'>"
-            "<source src='/app/static/reef.mp4' type='video/mp4'></video></div>"
-            "<div style='color:#5ebbdc;font-size:0.7rem;margin-top:0.4rem'>"
-            "Real-time species detection · BRUV underwater footage · YOLOv8 custom-trained</div>",
-            unsafe_allow_html=True,
-        )
+        if reef_path.exists():
+            b64 = _video_b64(reef_path)
+            st.markdown(
+                "<div style='font-family:Orbitron,sans-serif;color:#00e5ff;font-size:0.75rem;"
+                "letter-spacing:2px;margin-bottom:0.5rem'>🐟 UNDERWATER REEF DETECTION</div>"
+                "<div style='border-radius:10px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.55)'>"
+                f"<video autoplay loop muted playsinline style='width:100%;display:block'>"
+                f"<source src='data:video/mp4;base64,{b64}' type='video/mp4'></video></div>"
+                "<div style='color:#5ebbdc;font-size:0.7rem;margin-top:0.4rem'>"
+                "Real-time species detection · BRUV underwater footage · YOLOv8 custom-trained</div>",
+                unsafe_allow_html=True,
+            )
     with col_b:
-        st.markdown(
-            "<div style='font-family:Orbitron,sans-serif;color:#00e5ff;font-size:0.75rem;"
-            "letter-spacing:2px;margin-bottom:0.5rem'>⚖️ INDUSTRIAL GRADING & MEASUREMENT</div>"
-            "<div style='border-radius:10px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.55)'>"
-            "<video autoplay loop muted playsinline style='width:100%;display:block'>"
-            "<source src='/app/static/grading.mp4' type='video/mp4'></video></div>"
-            "<div style='color:#5ebbdc;font-size:0.7rem;margin-top:0.4rem'>"
-            "Length &amp; weight estimation · Fish grading S/M/L/XL · Directional counting</div>",
-            unsafe_allow_html=True,
-        )
+        if grading_path.exists():
+            b64 = _video_b64(grading_path)
+            st.markdown(
+                "<div style='font-family:Orbitron,sans-serif;color:#00e5ff;font-size:0.75rem;"
+                "letter-spacing:2px;margin-bottom:0.5rem'>⚖️ INDUSTRIAL GRADING & MEASUREMENT</div>"
+                "<div style='border-radius:10px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.55)'>"
+                f"<video autoplay loop muted playsinline style='width:100%;display:block'>"
+                f"<source src='data:video/mp4;base64,{b64}' type='video/mp4'></video></div>"
+                "<div style='color:#5ebbdc;font-size:0.7rem;margin-top:0.4rem'>"
+                "Length &amp; weight estimation · Fish grading S/M/L/XL · Directional counting</div>",
+                unsafe_allow_html=True,
+            )
 
 
 def render_detection_gallery() -> None:
