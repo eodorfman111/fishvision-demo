@@ -776,7 +776,7 @@ CS @ University of Florida<br><br>
 <a href='https://www.linkedin.com/in/leo-dorfman' target='_blank'>⬡ LinkedIn</a><br>
 <a href='https://github.com/eodorfman111' target='_blank'>⌥ GitHub</a><br><br>
 <b>Tech Stack</b><br>
-· YOLOv8 (ultralytics)<br>
+· YOLO (ultralytics)<br>
 · OpenAI GPT-4o-mini / Gemini<br>
 · OpenCV · PyTorch<br>
 · Streamlit · Plotly<br>
@@ -855,11 +855,11 @@ def render_dual_demo() -> None:
             st.markdown(
                 "<div style='font-family:Orbitron,sans-serif;color:#00e5ff;font-size:0.75rem;"
                 "letter-spacing:2px;margin-bottom:0.5rem'>🐟 UNDERWATER REEF DETECTION</div>"
-                "<div style='border-radius:10px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.55)'>"
-                f"<video autoplay loop muted playsinline style='width:100%;display:block'>"
+                "<div style='border-radius:10px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.55);height:320px'>"
+                f"<video autoplay loop muted playsinline style='width:100%;height:320px;object-fit:cover;display:block'>"
                 f"<source src='data:video/mp4;base64,{b64}' type='video/mp4'></video></div>"
                 "<div style='color:#5ebbdc;font-size:0.7rem;margin-top:0.4rem'>"
-                "Real-time species detection · BRUV underwater footage · YOLOv8 custom-trained</div>",
+                "Real-time species detection · BRUV underwater footage · Custom-trained model</div>",
                 unsafe_allow_html=True,
             )
     with col_b:
@@ -868,8 +868,8 @@ def render_dual_demo() -> None:
             st.markdown(
                 "<div style='font-family:Orbitron,sans-serif;color:#00e5ff;font-size:0.75rem;"
                 "letter-spacing:2px;margin-bottom:0.5rem'>⚖️ INDUSTRIAL GRADING & MEASUREMENT</div>"
-                "<div style='border-radius:10px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.55)'>"
-                f"<video autoplay loop muted playsinline style='width:100%;display:block'>"
+                "<div style='border-radius:10px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.55);height:320px'>"
+                f"<video autoplay loop muted playsinline style='width:100%;height:320px;object-fit:cover;display:block'>"
                 f"<source src='data:video/mp4;base64,{b64}' type='video/mp4'></video></div>"
                 "<div style='color:#5ebbdc;font-size:0.7rem;margin-top:0.4rem'>"
                 "Length &amp; weight estimation · Fish grading S/M/L/XL · Directional counting</div>",
@@ -924,7 +924,7 @@ def render_pipeline_overview() -> None:
          "Ingest entire folders of clips as a <b style='color:#c8e6f5'>continuous batch timeline</b>"
          " — no manual individual runs."
          "<br>Configurable frame sampling · 4K-capable · .mp4 .mov .mkv .avi"),
-        ("🤖", "YOLOv8 Custom Detector",
+        ("🤖", "Custom Fish Detector",
          "Purpose-trained on real underwater footage with"
          " <b style='color:#c8e6f5'>IoU deduplication</b> and nested-box filtering"
          " for pixel-accurate counts — no double-counting."),
@@ -1298,17 +1298,17 @@ def main() -> None:
     st.session_state["model_loaded"] = False
     render_sidebar()
 
-    # ── Page header (compact — keep video above the fold)
+    # ── Page header
     st.markdown(
         "<div style='text-align:center;padding:0.3rem 0 0.4rem'>"
         "<div class='demo-badge'>LIVE DEMO</div>"
         "<h1 style='font-size:1.5rem!important;margin:0.2rem 0 0.1rem'>🐟 FishVision</h1>"
         "<p style='color:#5ebbdc;font-size:0.75rem;letter-spacing:3px;margin:0 0 0.4rem'>"
-        "UNDERWATER MARINE SPECIES DETECTION &nbsp;·&nbsp; YOLOv8 &nbsp;·&nbsp; COMPUTER VISION"
+        "MARINE SPECIES DETECTION &nbsp;·&nbsp; COMPUTER VISION &nbsp;·&nbsp; AQUACULTURE AI"
         "</p>"
         "<div>"
         "<span class='tag'>Computer Vision</span>"
-        "<span class='tag'>YOLOv8</span>"
+        "<span class='tag'>Deep Learning</span>"
         "<span class='tag'>Marine Research</span>"
         "<span class='tag'>Multi-Species</span>"
         "<span class='tag'>Underwater Video</span>"
@@ -1316,9 +1316,7 @@ def main() -> None:
         unsafe_allow_html=True,
     )
 
-    # ── Showcase sections (no model needed)
-    render_hero()
-    st.markdown("---")
+    # ── Dual demo videos as hero (no separate hero video)
     render_dual_demo()
     st.markdown("---")
     render_detection_gallery()
