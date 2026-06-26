@@ -867,7 +867,7 @@ def render_dual_demo() -> None:
                 "<div style='font-family:Orbitron,sans-serif;color:#00e5ff;font-size:0.75rem;"
                 "letter-spacing:2px;margin-bottom:0.5rem'>⚖️ INDUSTRIAL GRADING & MEASUREMENT</div>"
                 "<div style='border-radius:10px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.55);height:320px'>"
-                f"<video autoplay loop muted playsinline style='width:100%;height:320px;object-fit:cover;display:block'>"
+                f"<video autoplay loop muted playsinline style='width:100%;height:320px;object-fit:contain;background:#000;display:block'>"
                 f"<source src='data:video/mp4;base64,{b64}' type='video/mp4'></video></div>"
                 "<div style='color:#5ebbdc;font-size:0.7rem;margin-top:0.4rem'>"
                 "Length &amp; weight estimation · Fish grading S/M/L/XL · Directional counting</div>",
@@ -888,12 +888,15 @@ def render_detection_gallery() -> None:
         path = STATIC_DIR / item["file"]
         with cols[i % 2]:
             if path.exists():
+                import base64
+                with open(path, "rb") as f:
+                    img_b64 = base64.b64encode(f.read()).decode()
                 st.markdown(
                     "<div style='"
                     "position:relative;border-radius:10px;overflow:hidden;"
                     "margin-bottom:1.1rem;"
                     "box-shadow:0 6px 28px rgba(0,0,0,0.55)'>"
-                    f"<img src='/app/static/{item['file']}' "
+                    f"<img src='data:image/png;base64,{img_b64}' "
                     "style='width:100%;display:block'>"
                     "<div style='"
                     "position:absolute;bottom:0;left:0;right:0;"
@@ -1316,6 +1319,8 @@ def main() -> None:
 
     # ── Dual demo videos as hero (no separate hero video)
     render_dual_demo()
+    st.markdown("---")
+    render_detection_gallery()
     st.markdown("---")
     render_pipeline_overview()
     st.markdown("---")
