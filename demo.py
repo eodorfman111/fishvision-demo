@@ -1294,31 +1294,7 @@ def main() -> None:
     )
     st.markdown(CSS, unsafe_allow_html=True)
 
-    # Initialize and pre-load model at startup
-    if "model_loaded" not in st.session_state:
-        st.session_state["model_loaded"] = False
-        
-    if not st.session_state["model_loaded"]:
-        if not MODEL_PATH.exists():
-            with st.spinner("📥 Downloading YOLOv8 model weights (~15s)..."):
-                try:
-                    load_model()
-                    st.session_state["model_loaded"] = True
-                except Exception as e:
-                    st.error(f"Failed to download model weights: {e}")
-        else:
-            with st.spinner("🧠 Loading YOLOv8 model..."):
-                try:
-                    load_model()
-                    st.session_state["model_loaded"] = True
-                except Exception as e:
-                    st.error(f"Failed to load model: {e}")
-    else:
-        try:
-            load_model()
-        except Exception:
-            pass
-
+    st.session_state["model_loaded"] = False
     render_sidebar()
 
     # ── Page header (compact — keep video above the fold)
@@ -1347,8 +1323,6 @@ def main() -> None:
     render_detection_gallery()
     st.markdown("---")
     render_pipeline_overview()
-    st.markdown("---")
-    render_try_it()
     st.markdown("---")
     render_contact_cta()
 
