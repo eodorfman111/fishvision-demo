@@ -851,8 +851,8 @@ def render_dual_demo() -> None:
             st.markdown(
                 "<div style='font-family:Orbitron,sans-serif;color:#00e5ff;font-size:0.75rem;"
                 "letter-spacing:2px;margin-bottom:0.5rem'>🐟 UNDERWATER REEF DETECTION</div>"
-                "<div style='border-radius:10px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.55);height:320px'>"
-                f"<video autoplay loop muted playsinline style='width:100%;height:320px;object-fit:cover;display:block'>"
+                "<div style='border-radius:10px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.55)'>"
+                f"<video autoplay loop muted playsinline style='width:100%;display:block'>"
                 f"<source src='data:video/mp4;base64,{b64}' type='video/mp4'></video></div>"
                 "<div style='color:#5ebbdc;font-size:0.7rem;margin-top:0.4rem'>"
                 "Real-time species detection · BRUV underwater footage · Custom-trained model</div>",
@@ -864,8 +864,8 @@ def render_dual_demo() -> None:
             st.markdown(
                 "<div style='font-family:Orbitron,sans-serif;color:#00e5ff;font-size:0.75rem;"
                 "letter-spacing:2px;margin-bottom:0.5rem'>⚖️ INDUSTRIAL GRADING & MEASUREMENT</div>"
-                "<div style='border-radius:10px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.55);height:320px'>"
-                f"<video autoplay loop muted playsinline style='width:100%;height:320px;object-fit:cover;object-position:top left;display:block'>"
+                "<div style='border-radius:10px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.55)'>"
+                f"<video autoplay loop muted playsinline style='width:100%;display:block'>"
                 f"<source src='data:video/mp4;base64,{b64}' type='video/mp4'></video></div>"
                 "<div style='color:#5ebbdc;font-size:0.7rem;margin-top:0.4rem'>"
                 "Length &amp; weight estimation · Fish grading S/M/L/XL · Directional counting</div>",
