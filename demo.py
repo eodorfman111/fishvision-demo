@@ -767,8 +767,6 @@ def render_sidebar() -> None:
 <b style='font-family:Orbitron,sans-serif;font-size:0.88rem;letter-spacing:2px'>FishVision</b><br>
 <span style='font-size:0.69rem;color:#3d7fa0'>Marine species detection pipeline</span>
 <br><br>
-<b>Model Status</b><br>
-· {status_text}<br><br>
 <b>Built by</b><br>
 Leo Dorfman<br>
 CS @ University of Florida<br><br>
@@ -1318,8 +1316,6 @@ def main() -> None:
 
     # ── Dual demo videos as hero (no separate hero video)
     render_dual_demo()
-    st.markdown("---")
-    render_detection_gallery()
     st.markdown("---")
     render_pipeline_overview()
     st.markdown("---")
