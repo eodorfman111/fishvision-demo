@@ -779,11 +779,9 @@ CS @ University of Florida<br><br>
 · OpenCV · PyTorch<br>
 · Streamlit · Plotly<br>
 · Python · ReportLab<br><br>
-<b>Model Stats</b><br>
-· v1.08 · custom-trained<br>
-· 10+ marine species<br>
-· 95%+ confidence scores<br>
-· Real underwater footage
+· Custom-trained on real underwater footage<br>
+· Multi-species marine detection<br>
+· Industrial fish grading &amp; measurement
 </div>
 """, unsafe_allow_html=True)
 
@@ -867,7 +865,7 @@ def render_dual_demo() -> None:
                 "<div style='font-family:Orbitron,sans-serif;color:#00e5ff;font-size:0.75rem;"
                 "letter-spacing:2px;margin-bottom:0.5rem'>⚖️ INDUSTRIAL GRADING & MEASUREMENT</div>"
                 "<div style='border-radius:10px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.55);height:320px'>"
-                f"<video autoplay loop muted playsinline style='width:100%;height:320px;object-fit:contain;background:#000;display:block'>"
+                f"<video autoplay loop muted playsinline style='width:100%;height:320px;object-fit:cover;object-position:top left;display:block'>"
                 f"<source src='data:video/mp4;base64,{b64}' type='video/mp4'></video></div>"
                 "<div style='color:#5ebbdc;font-size:0.7rem;margin-top:0.4rem'>"
                 "Length &amp; weight estimation · Fish grading S/M/L/XL · Directional counting</div>",
