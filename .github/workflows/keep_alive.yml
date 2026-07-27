@@ -19,17 +19,15 @@ jobs:
           with sync_playwright() as p:
               browser = p.chromium.launch()
               page = browser.new_page()
-              page.goto("https://fishvision-demo.streamlit.app/", timeout=60000)
-              try:
-                  btn = page.get_by_text("Yes, get this app back up!")
-                  if btn.is_visible():
-                      print("App sleeping — clicking wake button")
-                      btn.click()
-                      page.wait_for_timeout(90000)
-                  else:
-                      print("App already awake")
-              except Exception as e:
-                  print("No sleep button found, app may already be up:", e)
+              page.goto("https://fishvision-demo.streamlit.app/", timeout=60000, wait_until="domcontentloaded")
+              page.wait_for_timeout(3000)
+              btn = page.locator("text=Yes, get this app back up!")
+              if btn.count() > 0:
+                  print("App sleeping — clicking wake button")
+                  btn.first.click()
+                  page.wait_for_timeout(90000)
+              else:
+                  print("App already awake")
               print("Title:", page.title())
               browser.close()
           EOF
