@@ -15,19 +15,20 @@ jobs:
       - run: playwright install chromium --with-deps
       - run: |
           python - <<'EOF'
-          from playwright.sync_api import sync_playwright
+          from playwright.sync_api import sync_playwright, TimeoutError as PWTimeout
           with sync_playwright() as p:
               browser = p.chromium.launch()
               page = browser.new_page()
               page.goto("https://fishvision-demo.streamlit.app/", timeout=60000, wait_until="domcontentloaded")
-              page.wait_for_timeout(3000)
-              btn = page.locator("text=Yes, get this app back up!")
-              if btn.count() > 0:
+              frame = page.frame_locator("iframe[src*='fishvision-demo.streamlit.app']")
+              btn = frame.locator("text=Yes, get this app back up!")
+              try:
+                  btn.first.wait_for(state="visible", timeout=15000)
                   print("App sleeping — clicking wake button")
                   btn.first.click()
                   page.wait_for_timeout(90000)
-              else:
+              except PWTimeout:
                   print("App already awake")
-              print("Title:", page.title())
+              print("Done")
               browser.close()
           EOF
