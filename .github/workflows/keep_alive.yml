@@ -2,14 +2,33 @@ name: Keep Alive
 
 on:
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '*/25 * * * *'
   workflow_dispatch:
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping FishVision demo
-        run: |
-          curl -s -o /dev/null -w "%{http_code}" https://fishvision-demo.streamlit.app/ || true
-          echo "Pinged fishvision-demo.streamlit.app"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install playwright
+      - run: playwright install chromium --with-deps
+      - run: |
+          python - <<'EOF'
+          from playwright.sync_api import sync_playwright, TimeoutError as PWTimeout
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              page = browser.new_page()
+              page.goto("https://fishvision-demo.streamlit.app/", timeout=60000, wait_until="networkidle")
+              try:
+                  btn = page.get_by_text("Yes, get this app back up!", exact=False)
+                  btn.first.wait_for(state="visible", timeout=10000)
+                  print("App sleeping — waking it up")
+                  btn.first.click()
+                  page.wait_for_timeout(90000)
+                  print("Wake complete")
+              except PWTimeout:
+                  print("App already awake")
+              browser.close()
+          EOF
