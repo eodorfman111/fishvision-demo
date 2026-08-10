@@ -168,6 +168,23 @@ h1 { font-size: 1.8rem !important; }
     background: rgba(0,180,216,0.04) !important;
 }
 footer { visibility: hidden; }
+
+/* ── sticky mobile CTA ─── */
+@media (max-width: 768px) {
+    .mobile-sticky-cta {
+        position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+        background: linear-gradient(90deg, #00b4d8, #0077b6);
+        padding: 13px 20px; text-align: center;
+        border-top: 1px solid rgba(0,229,255,0.5);
+    }
+    .mobile-sticky-cta a {
+        color: #fff; text-decoration: none;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.78rem; letter-spacing: 1.5px;
+    }
+    /* pad bottom so sticky bar doesn't cover last section */
+    [data-testid="stAppViewContainer"] > section:first-child { padding-bottom: 60px !important; }
+}
 </style>
 """
 
@@ -1255,6 +1272,111 @@ def render_try_it() -> None:
                 )
 
 
+def render_above_fold_cta() -> None:
+    st.markdown(
+        "<div style='text-align:center;margin:0.9rem 0 1.1rem'>"
+        "<a href='mailto:leodorfman1@gmail.com' style='"
+        "background:linear-gradient(135deg,#00b4d8,#0077b6);"
+        "color:white;text-decoration:none;"
+        "font-family:Orbitron,sans-serif;font-size:0.82rem;"
+        "letter-spacing:1.5px;border-radius:8px;"
+        "padding:12px 32px;display:inline-block;"
+        "box-shadow:0 4px 22px rgba(0,180,216,0.4)'>"
+        "📬 REQUEST A CUSTOM BUILD"
+        "</a>"
+        "<div style='color:#3d7fa0;font-size:0.7rem;margin-top:9px;letter-spacing:1px'>"
+        "I respond within 24 hours &nbsp;·&nbsp; No commitment required"
+        "</div>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+
+
+def render_case_studies() -> None:
+    st.markdown("<div class='section-label'>CASE STUDIES</div>", unsafe_allow_html=True)
+    cases = [
+        {
+            "client": "ARCA Marine",
+            "type": "Marine Research · BRUV Footage",
+            "outcome": (
+                "Automated species detection on underwater BRUV footage for a paid marine-research client. "
+                "System identified cuttlefish, seabream, and reef species across multi-hour deployments "
+                "with 0.95+ confidence on primary detections. Delivered PDF reports, Excel timeseries data, "
+                "and annotated frame archives."
+            ),
+            "tags": ["BRUV footage", "Reef environment", "Multi-species", "Paid · Completed"],
+        },
+        {
+            "client": "Coonamessett Farm Foundation",
+            "type": "Aquaculture · Live Monitoring",
+            "outcome": (
+                "Built ScallopVision — a live overhead monitoring system for scallop tank health. "
+                "Running on a $1k/month retainer with ongoing hypothesis testing across tank populations. "
+                "System tracks individual scallop behavior and environmental response in real time."
+            ),
+            "tags": ["Live monitoring", "Aquaculture", "$1k/mo retainer", "Ongoing"],
+        },
+    ]
+    col_a, col_b = st.columns(2, gap="medium")
+    for i, (col, case) in enumerate(zip([col_a, col_b], cases)):
+        tags_html = " ".join(f"<span class='tag'>{t}</span>" for t in case["tags"])
+        with col:
+            st.markdown(
+                "<div class='glass-card'>"
+                f"<div style='font-family:Orbitron,sans-serif;color:#00e5ff;"
+                f"font-size:0.82rem;letter-spacing:2px;margin-bottom:4px'>{case['client']}</div>"
+                f"<div style='color:#3d7fa0;font-size:0.68rem;margin-bottom:10px'>{case['type']}</div>"
+                f"<div style='color:#c8e6f5;font-size:0.77rem;line-height:1.75;margin-bottom:12px'>{case['outcome']}</div>"
+                f"<div>{tags_html}</div>"
+                "</div>",
+                unsafe_allow_html=True,
+            )
+
+
+def render_faq() -> None:
+    st.markdown("<div class='section-label'>FREQUENTLY ASKED QUESTIONS</div>", unsafe_allow_html=True)
+    faqs = [
+        (
+            "What kind of footage does it work on?",
+            "BRUV (Baited Remote Underwater Video), drop-cams, ROV footage, tank overhead cameras, "
+            "and standard GoPro clips. Challenging conditions — low light, murky water, mixed species — are expected and handled.",
+        ),
+        (
+            "What species can it detect?",
+            "The demo model is trained on common reef fish and marine invertebrates (seabream, cuttlefish, eels, crabs, "
+            "starfish, sea urchins). For custom deployments I retrain on footage of your target species — typically 2–4 weeks "
+            "from footage handoff to deployed model.",
+        ),
+        (
+            "What do I receive as output?",
+            "PDF detection report with annotated frames · Excel spreadsheet (one row per sampled frame with fish counts, "
+            "timestamps, and confidence scores) · ZIP of all annotated frames · AI-generated ecological summary. "
+            "Batch processing across multiple clips is included.",
+        ),
+        (
+            "Can it run offline / in the field?",
+            "Yes — the model runs locally on CPU or GPU with no internet required for inference once weights are downloaded. "
+            "I can package the pipeline as a standalone executable for offline deployment.",
+        ),
+        (
+            "How much does it cost?",
+            "Scoping is always free. Project pricing depends on scope — some clients pay per-project, others on a monthly "
+            "retainer (starting ~$1k/month for ongoing monitoring). Reach out and I'll give you an honest number for your use case.",
+        ),
+        (
+            "How long does a custom build take?",
+            "A standard pipeline (model fine-tune + dashboard) typically takes 2–4 weeks from footage handoff to delivery. "
+            "Simpler integrations can be done faster. I respond to initial inquiries within 24 hours.",
+        ),
+    ]
+    for q, a in faqs:
+        with st.expander(q):
+            st.markdown(
+                f"<div style='color:#c8e6f5;font-size:0.82rem;line-height:1.8'>{a}</div>",
+                unsafe_allow_html=True,
+            )
+
+
 def render_contact_cta() -> None:
     st.markdown(
         "<div class='cta-card'>"
@@ -1279,7 +1401,11 @@ def render_contact_cta() -> None:
         "color:#00e5ff;text-decoration:none;font-size:0.82rem;"
         "border:1px solid rgba(0,229,255,0.35);border-radius:6px;padding:7px 18px'>"
         "⌥ GitHub</a>"
-        "</div></div>",
+        "</div>"
+        "<div style='color:#3d7fa0;font-size:0.7rem;margin-top:1.1rem;letter-spacing:1px'>"
+        "⚡ I respond within 24 hours &nbsp;·&nbsp; Scoping calls are always free"
+        "</div>"
+        "</div>",
         unsafe_allow_html=True,
     )
 
@@ -1287,12 +1413,34 @@ def render_contact_cta() -> None:
 # ── MAIN ──────────────────────────────────────────────────────────────────────
 def main() -> None:
     st.set_page_config(
-        page_title="FishVision Demo",
+        page_title="FishVision — AI Fish Detection for Marine Research & Aquaculture",
         page_icon="🐟",
         layout="wide",
         initial_sidebar_state="expanded",
     )
     st.markdown(CSS, unsafe_allow_html=True)
+
+    # ── Meta / OG tags (injected into parent page via JS)
+    st.markdown(
+        """<script>
+        (function(){
+            var metas = [
+                ['name','description','FishVision — custom computer vision pipelines for underwater fish detection, species ID, and behavioral monitoring. Used by marine research labs and aquaculture farms.'],
+                ['property','og:title','FishVision — AI Fish Detection Demo'],
+                ['property','og:description','Upload underwater video and get automated fish counts, species detection, and AI ecological summary. Built by Leo Dorfman.'],
+                ['property','og:image','https://fishvision-demo.streamlit.app/app/static/detect_reef.png'],
+                ['name','twitter:card','summary_large_image'],
+            ];
+            metas.forEach(function(m){
+                var el=document.createElement('meta');
+                el.setAttribute(m[0],m[1]);
+                el.setAttribute(m[0]==='property'?'content':'content',m[2]);
+                document.head.appendChild(el);
+            });
+        })();
+        </script>""",
+        unsafe_allow_html=True,
+    )
 
     st.session_state["model_loaded"] = False
     render_sidebar()
@@ -1315,6 +1463,9 @@ def main() -> None:
         unsafe_allow_html=True,
     )
 
+    # ── CTA above the fold
+    render_above_fold_cta()
+
     # ── Dual demo videos as hero (no separate hero video)
     render_dual_demo()
     st.markdown("---")
@@ -1322,7 +1473,19 @@ def main() -> None:
     st.markdown("---")
     render_pipeline_overview()
     st.markdown("---")
+    render_case_studies()
+    st.markdown("---")
+    render_faq()
+    st.markdown("---")
     render_contact_cta()
+
+    # ── Sticky mobile CTA (only visible on narrow screens via CSS)
+    st.markdown(
+        "<div class='mobile-sticky-cta'>"
+        "<a href='mailto:leodorfman1@gmail.com'>📬 REQUEST A CUSTOM BUILD</a>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
 
 
 if __name__ == "__main__":
