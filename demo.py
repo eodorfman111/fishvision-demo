@@ -1420,28 +1420,6 @@ def main() -> None:
     )
     st.markdown(CSS, unsafe_allow_html=True)
 
-    # ── Meta / OG tags (injected into parent page via JS)
-    st.markdown(
-        """<script>
-        (function(){
-            var metas = [
-                ['name','description','FishVision — custom computer vision pipelines for underwater fish detection, species ID, and behavioral monitoring. Used by marine research labs and aquaculture farms.'],
-                ['property','og:title','FishVision — AI Fish Detection Demo'],
-                ['property','og:description','Upload underwater video and get automated fish counts, species detection, and AI ecological summary. Built by Leo Dorfman.'],
-                ['property','og:image','https://fishvision-demo.streamlit.app/app/static/detect_reef.png'],
-                ['name','twitter:card','summary_large_image'],
-            ];
-            metas.forEach(function(m){
-                var el=document.createElement('meta');
-                el.setAttribute(m[0],m[1]);
-                el.setAttribute(m[0]==='property'?'content':'content',m[2]);
-                document.head.appendChild(el);
-            });
-        })();
-        </script>""",
-        unsafe_allow_html=True,
-    )
-
     st.session_state["model_loaded"] = False
     render_sidebar()
 
