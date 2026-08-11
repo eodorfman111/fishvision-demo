@@ -861,7 +861,7 @@ def render_dual_demo() -> None:
                 "<div style='font-family:Orbitron,sans-serif;color:#00e5ff;font-size:0.75rem;"
                 "letter-spacing:2px;margin-bottom:0.5rem'>🐟 UNDERWATER REEF DETECTION</div>"
                 "<div style='border-radius:10px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.55);height:460px'>"
-                "<video autoplay loop muted playsinline style='width:115%;margin-left:-7.5%;height:460px;object-fit:cover;object-position:center;display:block'>"
+                "<video autoplay loop muted playsinline preload='auto' style='width:115%;margin-left:-7.5%;height:460px;object-fit:cover;object-position:center;display:block'>"
                 "<source src='app/static/reef.mp4' type='video/mp4'></video></div>"
                 "<div style='color:#5ebbdc;font-size:0.7rem;margin-top:0.4rem'>"
                 "Real-time species detection · BRUV underwater footage · Custom-trained model</div>",
