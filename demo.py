@@ -894,12 +894,13 @@ def render_detection_gallery() -> None:
         path = STATIC_DIR / item["file"]
         with cols[i % 2]:
             if path.exists():
+                fname = item["file"]
                 st.markdown(
                     "<div style='"
                     "position:relative;border-radius:10px;overflow:hidden;"
                     "margin-bottom:1.1rem;"
                     "box-shadow:0 6px 28px rgba(0,0,0,0.55)'>"
-                    f"<img src='app/static/{item[\"file\"]}' "
+                    f"<img src='app/static/{fname}' "
                     "style='width:100%;display:block'>"
                     "<div style='"
                     "position:absolute;bottom:0;left:0;right:0;"
