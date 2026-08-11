@@ -814,20 +814,19 @@ CS @ University of Florida<br><br>
 
 
 def render_hero() -> None:
-    """Full-width looping detection video, served natively from static folder to avoid WS bloat."""
+    """Full-width looping detection video served directly via static URL."""
     if not PREVIEW_VIDEO.exists():
         st.warning("Hero video not found — place preview.mp4 in the static/ folder.")
         return
-    b64_hero = _video_b64(PREVIEW_VIDEO)
     st.markdown(
         "<div style='"
         "position:relative;border-radius:14px;overflow:hidden;"
         "box-shadow:0 8px 48px rgba(0,229,255,0.14);margin-bottom:0.3rem'>"
-        f"<video autoplay loop muted playsinline "
-        f"style='width:100%;display:block;max-height:480px;"
-        f"object-fit:cover;object-position:center bottom'>"
-        f"<source src='data:video/mp4;base64,{b64_hero}' type='video/mp4'>"
-        f"</video>"
+        "<video autoplay loop muted playsinline "
+        "style='width:100%;display:block;max-height:480px;"
+        "object-fit:cover;object-position:center bottom'>"
+        "<source src='app/static/preview.mp4' type='video/mp4'>"
+        "</video>"
         "<div style='"
         "position:absolute;bottom:0;left:0;right:0;"
         "background:linear-gradient(to top,rgba(2,13,26,0.93) 0%,"
@@ -846,12 +845,6 @@ def render_hero() -> None:
         unsafe_allow_html=True,
     )
 
-
-def _video_b64(path: Path) -> str:
-    import base64
-    with open(path, "rb") as f:
-        return base64.b64encode(f.read()).decode()
-
 def render_dual_demo() -> None:
     st.markdown(
         "<div class='section-label'>LIVE DETECTION DEMOS</div>",
@@ -864,26 +857,24 @@ def render_dual_demo() -> None:
 
     with col_a:
         if reef_path.exists():
-            b64 = _video_b64(reef_path)
             st.markdown(
                 "<div style='font-family:Orbitron,sans-serif;color:#00e5ff;font-size:0.75rem;"
                 "letter-spacing:2px;margin-bottom:0.5rem'>🐟 UNDERWATER REEF DETECTION</div>"
                 "<div style='border-radius:10px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.55);height:460px'>"
-                f"<video autoplay loop muted playsinline style='width:115%;margin-left:-7.5%;height:460px;object-fit:cover;object-position:center;display:block'>"
-                f"<source src='data:video/mp4;base64,{b64}' type='video/mp4'></video></div>"
+                "<video autoplay loop muted playsinline style='width:115%;margin-left:-7.5%;height:460px;object-fit:cover;object-position:center;display:block'>"
+                "<source src='app/static/reef.mp4' type='video/mp4'></video></div>"
                 "<div style='color:#5ebbdc;font-size:0.7rem;margin-top:0.4rem'>"
                 "Real-time species detection · BRUV underwater footage · Custom-trained model</div>",
                 unsafe_allow_html=True,
             )
     with col_b:
         if grading_path.exists():
-            b64 = _video_b64(grading_path)
             st.markdown(
                 "<div style='font-family:Orbitron,sans-serif;color:#00e5ff;font-size:0.75rem;"
                 "letter-spacing:2px;margin-bottom:0.5rem'>⚖️ INDUSTRIAL GRADING & MEASUREMENT</div>"
                 "<div style='border-radius:10px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.55)'>"
-                f"<video autoplay loop muted playsinline style='width:100%;display:block'>"
-                f"<source src='data:video/mp4;base64,{b64}' type='video/mp4'></video></div>"
+                "<video autoplay loop muted playsinline style='width:100%;display:block'>"
+                "<source src='app/static/grading.mp4' type='video/mp4'></video></div>"
                 "<div style='color:#5ebbdc;font-size:0.7rem;margin-top:0.4rem'>"
                 "Length &amp; weight estimation · Fish grading S/M/L/XL · Directional counting</div>",
                 unsafe_allow_html=True,
@@ -903,15 +894,12 @@ def render_detection_gallery() -> None:
         path = STATIC_DIR / item["file"]
         with cols[i % 2]:
             if path.exists():
-                import base64
-                with open(path, "rb") as f:
-                    img_b64 = base64.b64encode(f.read()).decode()
                 st.markdown(
                     "<div style='"
                     "position:relative;border-radius:10px;overflow:hidden;"
                     "margin-bottom:1.1rem;"
                     "box-shadow:0 6px 28px rgba(0,0,0,0.55)'>"
-                    f"<img src='data:image/png;base64,{img_b64}' "
+                    f"<img src='app/static/{item[\"file\"]}' "
                     "style='width:100%;display:block'>"
                     "<div style='"
                     "position:absolute;bottom:0;left:0;right:0;"
