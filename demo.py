@@ -1457,49 +1457,44 @@ def main() -> None:
     # ── Legal footer ───────────────────────────────────────────────────────────
     st.markdown("---")
     st.markdown(
-        """
-<div style='text-align:center;font-size:0.72rem;color:#64748b;line-height:2;padding-bottom:1rem'>
-  © 2025 Leo Dorfman / FishVision AI &nbsp;·&nbsp;
-  <a href='#tos' style='color:#64748b'>Terms of Service</a> &nbsp;·&nbsp;
-  <a href='#privacy' style='color:#64748b'>Privacy Policy</a>
-</div>
-
-<div id='tos' style='font-size:0.78rem;color:#94a3b8;line-height:1.8;max-width:760px;margin:0 auto;padding:1rem 0'>
-<b style='color:#cbd5e1'>Terms of Service</b><br>
-This website and its demo content are provided by Leo Dorfman ("FishVision AI") for informational and
-demonstration purposes only. By accessing this site you agree to these terms.<br><br>
-<b style='color:#cbd5e1'>1. No Warranty.</b> This demo is provided "as is" without any warranty of any kind, express or implied.
-FishVision AI makes no representations regarding the accuracy, completeness, or fitness for any particular
-purpose of the demo outputs.<br><br>
-<b style='color:#cbd5e1'>2. Limitation of Liability.</b> To the maximum extent permitted by law, FishVision AI shall not be liable
-for any direct, indirect, incidental, or consequential damages arising from your use of or inability to use
-this site or its outputs.<br><br>
-<b style='color:#cbd5e1'>3. Intellectual Property.</b> All video content, detection models, software, and visual outputs displayed
-on this site are the property of FishVision AI or its licensors. You may not reproduce, distribute, or
-create derivative works without prior written permission.<br><br>
-<b style='color:#cbd5e1'>4. Demo Nature.</b> Detection results shown are for demonstration purposes only and should not be relied
-upon for commercial, scientific, or regulatory decisions without independent validation.<br><br>
-<b style='color:#cbd5e1'>5. Changes.</b> These terms may be updated at any time without notice. Continued use of the site
-constitutes acceptance of any revised terms.
-</div>
-
-<div id='privacy' style='font-size:0.78rem;color:#94a3b8;line-height:1.8;max-width:760px;margin:0 auto;padding:1rem 0'>
-<b style='color:#cbd5e1'>Privacy Policy</b><br>
-FishVision AI is committed to your privacy. This policy describes how information is handled when you
-visit this site.<br><br>
-<b style='color:#cbd5e1'>1. No Personal Data Collected.</b> This site does not collect, store, or process any personal information.
-There are no sign-up forms, login requirements, or data submission features.<br><br>
-<b style='color:#cbd5e1'>2. Cookies.</b> This site is hosted on Streamlit Community Cloud, which may set functional cookies
-necessary for the platform to operate. FishVision AI does not set any tracking or advertising cookies.
-For information on Streamlit's data practices, see
-<a href='https://streamlit.io/privacy-policy' style='color:#64748b'>streamlit.io/privacy-policy</a>.<br><br>
-<b style='color:#cbd5e1'>3. Analytics.</b> This site does not use Google Analytics or any third-party analytics service.<br><br>
-<b style='color:#cbd5e1'>4. Contact.</b> Questions about this policy can be directed to leodorfman1@gmail.com.<br><br>
-<b style='color:#cbd5e1'>5. Governing Law.</b> This policy is governed by the laws of the State of Florida, United States.
-</div>
-        """,
+        "<div style='text-align:center;font-size:0.72rem;color:#64748b;padding-bottom:0.5rem'>"
+        "© 2025 Leo Dorfman / FishVision AI</div>",
         unsafe_allow_html=True,
     )
+    col_tos, col_pp = st.columns(2)
+    with col_tos:
+        with st.expander("Terms of Service"):
+            st.markdown("""
+**1. No Warranty.** This demo is provided "as is" without any warranty of any kind, express or implied.
+FishVision AI makes no representations regarding the accuracy, completeness, or fitness for any particular purpose of the demo outputs.
+
+**2. Limitation of Liability.** To the maximum extent permitted by law, FishVision AI shall not be liable
+for any direct, indirect, incidental, or consequential damages arising from your use of or inability to use this site.
+
+**3. Intellectual Property.** All video content, detection models, software, and visual outputs are the property
+of FishVision AI or its licensors. You may not reproduce or distribute them without prior written permission.
+
+**4. Demo Nature.** Detection results are for demonstration purposes only and should not be relied upon for
+commercial, scientific, or regulatory decisions without independent validation.
+
+**5. Changes.** These terms may be updated at any time without notice.
+            """)
+    with col_pp:
+        with st.expander("Privacy Policy"):
+            st.markdown("""
+**1. No Personal Data Collected.** This site does not collect, store, or process any personal information.
+There are no sign-up forms, login requirements, or data submission features.
+
+**2. Cookies.** This site is hosted on Streamlit Community Cloud, which may set functional cookies necessary
+for the platform to operate. FishVision AI does not set any tracking or advertising cookies.
+See [streamlit.io/privacy-policy](https://streamlit.io/privacy-policy).
+
+**3. Analytics.** This site does not use Google Analytics or any third-party analytics service.
+
+**4. Contact.** Questions can be directed to leodorfman1@gmail.com.
+
+**5. Governing Law.** This policy is governed by the laws of the State of Florida, United States.
+            """)
 
 
 if __name__ == "__main__":
