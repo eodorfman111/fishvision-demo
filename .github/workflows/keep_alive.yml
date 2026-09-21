@@ -2,19 +2,24 @@ name: Keep Alive
 
 on:
   schedule:
-    - cron: '*/25 * * * *'
+    - cron: '*/20 * * * *'
   workflow_dispatch:
 
 jobs:
   ping:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - name: Ping Streamlit app
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Playwright + Chromium
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 https://fishvision-demo.streamlit.app/)
-          echo "HTTP status: $STATUS"
-          if [ "$STATUS" = "200" ]; then
-            echo "App is awake"
-          else
-            echo "Got status $STATUS — app may be waking up"
-          fi
+          pip install playwright
+          playwright install --with-deps chromium
+
+      - name: Visit app to keep it awake
+        run: python keep_alive.py
